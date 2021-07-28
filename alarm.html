@@ -1,0 +1,252 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            <meta charset = "UTF-8";>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Alarm</title>
+            <link rel="stylesheet" href="style1.css">
+        </title>
+    </headN>
+    <body id="alarm-container">
+      <div class="mybutton">
+        <a href="C:/Users/SID/websource/worldclock.html">
+          <button class="world-clock">World Clock</button>
+        </a>
+        <a href="C:/Users/SID/websource/alarm.html">
+            <button class="alarm">Alarm</button>
+        </a>
+        <a href="C:/Users/SID/websource/stopwatch.html">
+            <button class="stopwatch">Stopwatch</button>
+        </a>
+        <a href="C:/Users/SID/websource/timer.html">
+            <button class="timer">Timer</button>
+        </a>
+      </div>
+      <input  type="datetime-local" id="alarmTime">
+      <button type="button" onclick="setAlarm(this);">Set Alarm</button>
+
+      <div id ="alarmOptions" style="display: none;">
+        <button type="button" onclick="snooze(this);">Snooze 5 Minutes</button>
+        <button id="alarmbtn" type="button" onclick="stopalarm(this);">Stop Alarm</button>        
+      </div>
+      <script scr="script.js"></script>
+    </body>
+</html>-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset = "UTF-8";>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Alarm</title>
+        <style>
+            /* (A) FONT */
+#ctime, #tpick {
+  font-family: Impact, sans-serif;
+}
+.header {
+  text-align: center;
+  font-weight: normal;
+  margin: 5px 0 10px 0;
+}
+
+/* (B) CURRENT TIME */
+#ctime {
+  margin: 0 auto;
+  max-width: 350px;
+  padding: 10px;
+  background: #000;
+  text-align: center;
+}
+#ctime .header {
+  color: #c61d1d;
+}
+#ctime .square {
+  display: inline-block;
+  padding: 10px;
+  margin: 5px;
+}
+#ctime .digits {
+  font-size: 24px;
+  background: #fff;
+  color: #000;
+  padding: 20px 10px;
+  border-radius: 5px;
+}
+#ctime .text {
+  margin-top: 10px;
+  color: #ddd;
+}
+
+/* (C) TIME PICKER */
+#tpick {
+  margin: 0 auto;
+  max-width: 350px;
+  padding: 10px;
+  background: #f2f2f2;
+  white-space: nowrap;
+}
+#tpick-h, #tpick-m, #tpick-s {
+  display: inline-block;
+  width: 32%;
+}
+#tpick select {
+  box-sizing: padding-box;
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 20px 0;
+}
+#tset, #treset {
+  box-sizing: padding-box;
+  width: 50%;
+  background: #3368b2;
+  color: #fff;
+  padding: 10px;
+  border: 0;
+  cursor: pointer;
+}
+#tset:disabled, #treset:disabled {
+  background: #aaa;
+  color: #888;
+}
+        </style>
+    </head> 
+    <body> 
+ <!--(A) CURRENT TIME-->
+<div id="ctime">
+    <h1 class="header">THE CURRENT TIME</h1>
+    <div class="square">
+      <div class="digits" id="chr">00</div>
+      <div class="text">HR</div>
+    </div>
+    <div class="square">
+      <div class="digits" id="cmin">00</div>
+      <div class="text">MIN</div>
+    </div>
+    <div class="square">
+      <div class="digits" id="csec">00</div>
+         <div class="text">SEC</div>
+    </div>
+  </div>
+  
+  <!-- (B) SET ALARM -->
+  <div id="tpick">
+    <h1 class="header">
+      SET ALARM
+    </h1>
+    <div id="tpick-h"></div>
+    <div id="tpick-m"></div>
+    <div id="tpick-s"></div>
+    <div>
+      <input type="button" value="Set" id="tset"/>
+      <input type="button" value="Reset" id="treset" disabled/>
+    </div>
+  </div>
+  
+  <!-- (C) ALARM SOUND -->
+  <audio id="alarm-sound" loop>
+    <source src="wake-up-sound.mp3" type="audio/mp3">
+  </audio>
+</body> 
+  
+<script>
+var ac = {
+    // (A) INITIALIZE ALARM CLOCK
+    init : function () {
+      // (A1) GET THE CURRENT TIME - HOUR, MIN, SECONDS
+      ac.chr = document.getElementById("chr");
+      ac.cmin = document.getElementById("cmin");
+      ac.csec = document.getElementById("csec");
+  
+      // (A2) CREATE TIME PICKER - HR, MIN, SEC
+      ac.thr = ac.createSel(23);
+      document.getElementById("tpick-h").appendChild(ac.thr);
+      ac.thm = ac.createSel(59);
+      document.getElementById("tpick-m").appendChild(ac.thm);
+      ac.ths = ac.createSel(59);
+      document.getElementById("tpick-s").appendChild(ac.ths);
+  
+      // (A3) CREATE TIME PICKER - SET, RESET
+      ac.tset = document.getElementById("tset");
+      ac.tset.addEventListener("click", ac.set);
+      ac.treset = document.getElementById("treset");
+      ac.treset.addEventListener("click", ac.reset);
+  
+      // (A4) GET ALARM SOUND
+      ac.sound = document.getElementById("alarm-sound");
+  
+      // (A5) START THE CLOCK
+      ac.alarm = null;
+      setInterval(ac.tick, 1000);
+    },
+  
+    // (B) SUPPORT FUNCTION - CREATE SELECTOR FOR HR, MIN, SEC
+    createSel : function (max) {
+      var selector = document.createElement("select");
+      for (var i=0; i<=max; i++) {
+        var opt = document.createElement("option");
+        i = ac.padzero(i);
+        opt.value = i;
+        opt.innerHTML = i;
+        selector.appendChild(opt);
+      }
+      return selector
+    },
+  
+    // (C) SUPPORT FUNCTION - PREPEND HR, MIN, SEC WITH 0 (IF < 10)
+    padzero : function (num) {
+      if (num < 10) { num = "0" + num; }
+      else { num = num.toString(); }
+      return num;
+    },
+  
+    // (D) UPDATE CURRENT TIME
+    tick : function () {
+      // (D1) CURRENT TIME
+      var now = new Date();
+      var hr = ac.padzero(now.getHours());
+      var min = ac.padzero(now.getMinutes());
+      var sec = ac.padzero(now.getSeconds());
+  
+      // (D2) UPDATE HTML CLOCK
+      ac.chr.innerHTML = hr;
+      ac.cmin.innerHTML = min;
+      ac.csec.innerHTML = sec;*/
+  
+      // (D3) CHECK AND SOUND ALARM
+      if (ac.alarm != null) {
+        now = hr + min + sec;
+        if (now == ac.alarm) {
+          if (ac.sound.paused) { ac.sound.play(); }
+        }
+      }
+    },
+  
+    // (E) SET ALARM
+    set : function () {
+      ac.alarm = ac.thr.value + ac.thm.value + ac.ths.value;
+      ac.thr.disabled = true;
+      ac.thm.disabled = true;
+      ac.ths.disabled = true;
+      ac.tset.disabled = true;
+      ac.treset.disabled = false;
+    },
+  
+    // (F) RESET ALARM
+    reset : function () {
+      if (!ac.sound.paused) { ac.sound.pause(); }
+      ac.alarm = null;
+      ac.thr.disabled = false;
+      ac.thm.disabled = false;
+      ac.ths.disabled = false;
+      ac.tset.disabled = false;
+      ac.treset.disabled = true;
+    }
+  };
+  
+  // (G) START CLOCK ON PAGE LOAD
+  window.addEventListener("load", ac.init);
+</script>

@@ -1,0 +1,152 @@
+body{
+    background-color: black;   
+}   
+.mybutton{
+    bottom: 0px;
+    position: fixed;
+    
+}
+.world-clock{
+    background-color: black;
+    color: white;
+    border-color: white;
+    padding: 20px 129px 20px 127px;
+    font-size: 20px;
+}
+.alarm{
+    background-color: black;
+    color: white;
+    border-color: white;
+    padding: 20px 127px 20px 127px;
+    font-size: 20px;
+}
+.stopwatch{
+    background-color: black;
+    color: white;
+    border-color: white;
+    padding: 20px 127px 20px 127px;
+    font-size: 20px;
+}
+.timer{
+    background-color: black;
+    color: white;
+    border-color: white;
+    padding: 20px 127px 20px 127px;
+    font-size: 20px;
+}   
+.clocks{
+    background-color: black;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    transform: translateX(-%50) translateY(-%50);
+    color: white;
+    font-size: 50px;
+    border: 1px solid #ccc;
+    padding: 0px 5px 0px 5px;
+}
+#body-container{
+    background-color:black;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    
+}
+#container{
+    color: white;
+    border:1px solid #ccc;
+    padding: 5px 7px 10px 15px;
+}
+.digit{
+    color:white;
+    font-size: 50px;
+    font-weight: bold;
+}
+.txt{
+    font-size: 40px;
+    font-weight: bold;
+}
+#btn-container{
+    text-align: center;
+    margin-top: 10px;
+}
+.btn{
+    padding: 10px 25px;
+    font-size: 20px;
+    color:white;
+    border: 0px;
+    cursor: pointer;
+    margin: 0px 10px;
+    
+    
+}
+#start{
+    background-color: #1abc9c;
+}
+#stop{
+    background-color: #3498db;
+}
+#reset{
+    background-color: #e74c3c;   
+}
+#timer-body{
+    display:flex;
+    flex-direction: column;
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 0px;
+    overflow: hidden;   
+} 
+.countdown{
+    color: white;
+    display: flex;
+    transform: scale(2);
+    margin-top: 250px;
+    border: 1px solid #ccc;
+}
+.time{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    
+}
+.time h2{
+   color: white;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1px;
+}
+.time small{
+    color: white;
+    font-size: 10px;
+}
+
+/*Alarm*/
+#alarm-container{
+    background-color: black;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+#button-1{
+    background-color: black;
+    color: white;
+    font-size: large;
+    padding: 20px;
+    margin-left: 10px;
+}
+
+#alarmbtn{
+    background-color: black;
+    color: white;
+    font-size: large;
+    padding: 20px;
+    margin-left: 10px;
+}
