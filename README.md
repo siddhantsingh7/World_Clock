@@ -1,7 +1,8 @@
-A simple world clock implemented using HTML, CSS, javaScript.
-There are four section in this project
+A simple world clock implemented using HTML, CSS, JavaScript.
+
+There are four sections in this project:
 1.World Clock: It shows real time.
-2.Alerm: Here user can set alerm
+2.Alarm: Here user can set alarm
 3.Stopwatch: User can measure time here.
 4.Timer: User can set timer in this section.
 
